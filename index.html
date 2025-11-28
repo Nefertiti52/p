@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Love - Paula #Pauli</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;600&display=swap');
+
+:root {
+  --primary: #00f7ff;
+  --secondary: #ff2df7;
+  --bg-dark: #01010a;
+  --text: #d8faff;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at center, #050515, #000000 90%);
+  color: var(--text);
+  overflow-x: hidden;
+  perspective: 1000px;
+}
+
+/* HERO SECTION WITH PARTICLE FIELD */
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.canvas-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3.5rem;
+  letter-spacing: 3px;
+  color: var(--primary);
+  text-shadow: 0 0 35px var(--primary), 0 0 60px var(--secondary);
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 2s ease;
+}
+
+.hero-subtitle {
+  max-width: 700px;
+  font-size: 1.3rem;
+  opacity: 0.85;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 3s ease;
+  margin-top: 15px;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* PANEL SECTIONS WITH NEON GLOW AND ANIMATION */
+.panel {
+  padding: 100px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  perspective: 800px;
+}
+
+.panel h2 {
+  font-family: 'Orbitron';
+  font-size: 2.8rem;
+  color: var(--secondary);
+  text-shadow: 0 0 25px var(--secondary), 0 0 50px var(--primary);
+  margin-bottom: 40px;
+  animation: neonPulse 2s infinite alternate;
+}
+
+@keyframes neonPulse {
+  0% { text-shadow: 0 0 20px var(--secondary), 0 0 40px var(--primary); }
+  100% { text-shadow: 0 0 35px var(--secondary), 0 0 80px var(--primary); }
+}
+
+.panel-card {
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(0, 247, 255, 0.25);
+  border-radius: 30px;
+  padding: 50px;
+  max-width: 850px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 35px #00f7ff55, 0 0 60px #ff2df744;
+  transform: translateY(80px) rotateX(10deg);
+  opacity: 0;
+  animation: cardEnter 1.2s ease forwards;
+}
+
+@keyframes cardEnter {
+  to { opacity: 1; transform: translateY(0) rotateX(0); }
+}
+
+/* TIMELINE WITH 3D EFFECT */
+.timeline {
+  width: 90%;
+  max-width: 950px;
+  margin-top: 60px;
+  border-left: 4px solid var(--primary);
+  padding-left: 50px;
+}
+.timeline .event {
+  margin-bottom: 60px;
+  position: relative;
+  animation: fadeIn3D 2s ease forwards;
+}
+.timeline .event::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: var(--secondary);
+  border-radius: 50%;
+  position: absolute;
+  left: -56px;
+  top: 0;
+  box-shadow: 0 0 20px var(--secondary);
+}
+
+@keyframes fadeIn3D {
+  from { opacity: 0; transform: translateZ(-50px); }
+  to { opacity: 1; transform: translateZ(0); }
+}
+
+/* GALLERY WITH 3D HOVER EFFECTS */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+  width: 90%;
+  max-width: 1000px;
+  margin-top: 50px;
+}
+.gallery img {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 247, 255, 0.4);
+  transition: transform 0.5s, box-shadow 0.5s;
+}
+.gallery img:hover {
+  transform: rotateY(15deg) rotateX(5deg) scale(1.15);
+  box-shadow: 0 0 35px var(--primary), 0 0 60px var(--secondary);
+}
+
+/* NEON FLOATING ELEMENTS */
+.neon-ring {
+  position: absolute;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  opacity: 0.25;
+  animation: spin 30s linear infinite;
+}
+.neon-ring1 { width: 250px; height: 250px; top: 5%; left: 10%; }
+.neon-ring2 { width: 350px; height: 350px; bottom: 10%; right: 15%; animation-duration: 45s; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+</style>
+</head>
+<body>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <canvas class="canvas-particles" id="particles"></canvas>
+  <div class="neon-ring neon-ring1"></div>
+  <div class="neon-ring neon-ring2"></div>
+  <h1 class="hero-title">To My Beloved Paula</h1>
+  <p class="hero-subtitle">You are the brightest star in my universe, the center of every thought and dream.</p>
+</section>
+
+<!-- ABOUT PANEL -->
+<section class="panel">
+  <h2>My Feelings for you</h2>
+  <div class="panel-card">
+    I think about you constantly, dream about our future, and cherish every moment we've shared. You are my everything, You are my Paula and You are my baby.
+  </div>
+</section>
+
+<!-- TIMELINE PANEL -->
+<section class="panel">
+  <h2>Our Future Timeline</h2>
+  <div class="timeline">
+    <div class="event"><strong>Step 1:</strong> Build our dreams together.</div>
+    <div class="event"><strong>Step 2:</strong> Explore the world hand in hand.</div>
+    <div class="event"><strong>Step 3:</strong> Marry and create a loving family.</div>
+    <div class="event"><strong>Step 4:</strong> Grow old together, eternally connected.</div>
+  </div>
+</section>
+
+<!-- GALLERY PANEL -->
+<section class="panel">
+  <h2></h2>
+  <div class="gallery">
+    <img src="images/photo1.jpg" alt="Memory 1">
+    <img src="images/photo2.jpg" alt="Memory 2">
+    <img src="images/photo3.jpg" alt="Memory 3">
+    <img src="images/photo4.jpg" alt="Memory 4">
+  </div>
+</section>
+
+<!-- PARTICLE JS -->
+<script>
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particlesArray = [];
+class Particle {
+  constructor(){
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 1;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.speedY = (Math.random() - 0.5) * 0.5;
+  }
+  update(){
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if(this.x > canvas.width) this.x = 0;
+    if(this.x < 0) this.x = canvas.width;
+    if(this.y > canvas.height) this.y = 0;
+    if(this.y < 0) this.y = canvas.height;
+  }
+  draw(){
+    ctx.fillStyle = '#00f7ff';
+    ctx.shadowColor = '#00f7ff';
+    ctx.shadowBlur = 10;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI *2);
+    ctx.fill();
+  }
+}
+
+function init(){
+  particlesArray = [];
+  for(let i=0;i<200;i++){
+    particlesArray.push(new Particle());
+  }
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particlesArray.forEach(p => {p.update(); p.draw();});
+  requestAnimationFrame(animate);
+}
+
+init();
+animate();
+window.addEventListener('resize', ()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight; init();});
+</script>
+
+</body>
+</html>
