@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="favicon.jpg" type="image/x-icon">
 <title>For My Paula</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;600&display=swap');
@@ -38,13 +37,6 @@ body {
   background-image: url('images/hero-bg.jpg');
   background-size: cover;
   background-position: center;
-}
-.canvas-particles {
-  position: absolute;
-  top:0; left:0;
-  width:100%; height:100%;
-  z-index:0;
-  pointer-events: none;
 }
 .hero-title {
   font-family: 'Orbitron', sans-serif;
@@ -92,20 +84,21 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translateY(20px);
+  transform: translate(-50%, -50%);
   background: rgba(255,182,193,0.95);
   padding: 20px 30px;
   border-radius: 20px;
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   text-align: center;
   opacity: 0;
-  z-index: 9999;
+  z-index: 99999;
+  pointer-events: none;
   transition: opacity 0.5s, transform 0.5s;
 }
 .love-note.show {
   opacity: 1;
-  transform: translate(-50%, -50%) translateY(0);
+  transform: translate(-50%, -50%) scale(1);
 }
 
 /* PANEL SECTIONS */
@@ -150,35 +143,38 @@ body {
 
 /* GALLERY */
 .gallery { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:25px; width:90%; max-width:1000px; margin-top:40px; }
-.gallery-item { position:relative; overflow:hidden; border-radius:20px; transition: transform 0.3s ease; }
+.gallery-item { position:relative; overflow:hidden; border-radius:20px; transition: transform 0.3s ease; cursor:pointer; }
 .gallery-item img { width:100%; border:1px solid rgba(255,105,180,0.5); transition: transform 0.5s, box-shadow 0.5s; display:block; }
 .gallery-item:hover img { transform: rotateY(10deg) rotateX(4deg) scale(1.12) translateY(-5px); box-shadow:0 0 25px var(--primary),0 0 40px var(--secondary); }
 .gallery-item .description { position:absolute; bottom:0; left:0; width:100%; background: rgba(255,182,193,0.8); color:#fff; text-align:center; padding:10px; font-size:1rem; opacity:0; transition: opacity 0.3s, transform 0.3s; transform: translateY(5px); }
 .gallery-item:hover .description { opacity:1; transform: translateY(0); }
 
-/* MUSIC CONTROL BUTTON */
-#music-control { position: fixed; bottom: 20px; right: 20px; z-index: 1000; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(45deg,#ff66cc,#ffb3ff); border: none; cursor: pointer; font-size: 24px; color: white; box-shadow: 0 0 10px #ff66cc, 0 0 20px #ffb3ff; display:flex; justify-content:center; align-items:center; transition: transform 0.3s, box-shadow 0.3s; }
-#music-control:hover { transform: scale(1.2); box-shadow: 0 0 20px #ff66cc,0 0 40px #ffb3ff; }
-audio#bgMusic { display:none; }
+/* MUSIC CONTROL */
+#music-control { position: fixed; bottom: 20px; right: 20px; z-index: 1000; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(45deg,#ff66cc,#ffb3ff); border: none; cursor: pointer; font-size: 24px; color: white; display:flex; justify-content:center; align-items:center; transition: transform 0.3s, box-shadow 0.3s; }
+#music-control:hover { transform: scale(1.2); }
 
-/* CONFETTI */
-.confetti-piece { position: absolute; width: 8px; height: 8px; background: var(--primary); opacity: 0.8; border-radius: 50%; pointer-events: none; }
+/* INTERACTIVE ELEMENTS */
+#draggable-heart { position: absolute; font-size: 30px; top: 200px; left: 50%; cursor: grab; z-index: 1000; }
+.color-button { padding: 10px 20px; margin:10px; border-radius:20px; border:none; cursor:pointer; font-weight:bold; background:linear-gradient(45deg,#ff66cc,#ffb3ff); color:white; transition: transform 0.3s; }
+.color-button:hover { transform: scale(1.1); }
 
-/* SPARKLES */
-.sparkle { position:absolute; width:4px; height:4px; border-radius:50%; background:white; pointer-events:none; opacity:0; }
+/* EFFECTS CANVAS */
+#effects-canvas { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
+
+/* CURSOR FOLLOWING MESSAGES */
+.cursor-msg { position: absolute; font-size: 18px; font-weight: bold; color: #ffb3ff; pointer-events: none; user-select: none; animation: riseFade 2s forwards; }
+@keyframes riseFade { 0% {opacity:1; transform: translateY(0);} 100% {opacity:0; transform: translateY(-50px);} }
+
 </style>
 </head>
 <body>
 
 <audio id="bgMusic" autoplay loop>
   <source src="ay.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
 </audio>
-
 <button id="music-control" onclick="toggleMusic()">🎵</button>
 
 <section class="hero">
-  <canvas class="canvas-particles" id="particles"></canvas>
   <h1 class="hero-title">To My BABY 💖</h1>
   <p class="hero-subtitle">You’re the brightest star in my universe — my dreams, my forever.</p>
   <button class="love-button" onclick="showLoveNote()">Click me 💌</button>
@@ -237,77 +233,129 @@ audio#bgMusic { display:none; }
   </div>
 </section>
 
+<div id="draggable-heart">💖</div>
+<button class="color-button" onclick="randomColor()">Press me for color 💫</button>
+<canvas id="effects-canvas"></canvas>
+
 <script>
-// Particle background (optimized)
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-let particles = [];
-class Particle {
-  constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.size=Math.random()*1.5+0.5; this.speedX=(Math.random()-0.5)*0.2; this.speedY=(Math.random()-0.5)*0.2; }
-  update(){ this.x+=this.speedX; this.y+=this.speedY; if(this.x>canvas.width)this.x=0;if(this.x<0)this.x=canvas.width;if(this.y>canvas.height)this.y=0;if(this.y<0)this.y=canvas.height; }
-  draw(){ ctx.fillStyle='#ff66cc'; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); }
-}
-function initParticles(){ particles=[]; for(let i=0;i<30;i++){particles.push(new Particle());} }
-function animateParticles(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animateParticles); }
-initParticles(); animateParticles();
-window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight; initParticles();});
-
-// Timeline toggle
-function toggleEvent(el){ const details=el.querySelector('.details'); if(details.style.maxHeight) details.style.maxHeight=null; else details.style.maxHeight=details.scrollHeight+'px'; }
-
-// Gallery tilt + sparkles
-document.querySelectorAll('.gallery-item').forEach(item=>{
-  item.addEventListener('mousemove',e=>{
-    const rect=item.getBoundingClientRect(); const x=e.clientX-rect.left; const y=e.clientY-rect.top;
-    const cx=rect.width/2; const cy=rect.height/2;
-    const dx=(x-cx)/20; const dy=(y-cy)/20;
-    item.style.transform=`rotateY(${dx}deg) rotateX(${-dy}deg)`;
-    createSparkle(item,x,y);
-  });
-  item.addEventListener('mouseleave',()=>item.style.transform='rotateY(0) rotateX(0)');
-});
-
-function createSparkle(parent,x,y){
-  const sparkle=document.createElement('div'); sparkle.className='sparkle';
-  sparkle.style.left=x+'px'; sparkle.style.top=y+'px'; sparkle.style.opacity=1;
-  parent.appendChild(sparkle);
-  const size=Math.random()*3+2; sparkle.style.width=sparkle.style.height=size+'px';
-  sparkle.animate([{opacity:1, transform:'scale(1)'},{opacity:0, transform:'scale(0)'}],{duration:500,easing:'ease-out'});
-  setTimeout(()=>sparkle.remove(),500);
+// ---------------------- TIMELINE ----------------------
+function toggleEvent(el){
+  const details=el.querySelector('.details');
+  if(details.style.maxHeight) details.style.maxHeight=null;
+  else details.style.maxHeight=details.scrollHeight+'px';
 }
 
-// Love note & confetti
-const messages=["I love you more every day 💖","You make my world brighter ✨","Forever and always, my love ❤️","You are my everything, baby 💌"];
+// ---------------------- LOVE NOTE ----------------------
+const loveMessages=["I love you more every day 💖","You make my world brighter ✨","Forever and always, my love ❤️","You are my everything, baby 💌"];
 let msgIndex=0;
 function showLoveNote(){
   const note=document.getElementById('love-note');
-  note.textContent=messages[msgIndex]; note.classList.add('show');
-  msgIndex=(msgIndex+1)%messages.length;
-  createConfetti(25);
-  setTimeout(()=>{note.classList.remove('show');},2500);
-}
-function createConfetti(count){
-  for(let i=0;i<count;i++){
-    const conf=document.createElement('div'); conf.className='confetti-piece';
-    conf.style.left=Math.random()*window.innerWidth+'px';
-    conf.style.top='-10px';
-    conf.style.background=`hsl(${Math.random()*360},100%,75%)`;
-    conf.style.width=conf.style.height=Math.random()*6+4+'px';
-    document.body.appendChild(conf);
-    const fallDuration=Math.random()*2000+2000;
-    conf.animate([{transform:'translateY(0) rotate(0deg)', opacity:1},
-                  {transform:`translateY(${window.innerHeight+50}px) rotate(${Math.random()*360}deg)`, opacity:0}], 
-                  {duration:fallDuration, easing:'ease-out'});
-    setTimeout(()=>conf.remove(),fallDuration);
-  }
+  note.textContent=loveMessages[msgIndex];
+  note.classList.add('show');
+  msgIndex=(msgIndex+1)%loveMessages.length;
+  spawnConfetti();
+  setTimeout(()=>{note.classList.remove('show');},3500);
 }
 
-// Music control
-const bgMusic=document.getElementById('bgMusic'); const musicBtn=document.getElementById('music-control');
-function toggleMusic(){ if(bgMusic.paused){ bgMusic.play(); musicBtn.textContent='🎵'; } else { bgMusic.pause(); musicBtn.textContent='🔇'; }
+// ---------------------- GALLERY TILT ----------------------
+document.querySelectorAll('.gallery-item').forEach(item=>{
+  item.addEventListener('mousemove',e=>{
+    const rect=item.getBoundingClientRect(); 
+    const x=e.clientX-rect.left; 
+    const y=e.clientY-rect.top;
+    const cx=rect.width/2; 
+    const cy=rect.height/2; 
+    const dx=(x-cx)/20; 
+    const dy=(y-cy)/20;
+    item.style.transform=`rotateY(${dx}deg) rotateX(${-dy}deg)`;
+  });
+  item.addEventListener('mouseleave',()=>{item.style.transform='rotateY(0) rotateX(0)';});
+  item.addEventListener('click',()=>{alert("Aww! You're the cutest 😘");});
+});
+
+// ---------------------- DRAGGABLE HEART ----------------------
+const heart=document.getElementById('draggable-heart');
+let isDragging=false, offsetX=0, offsetY=0;
+heart.addEventListener('mousedown',e=>{isDragging=true; offsetX=e.offsetX; offsetY=e.offsetY;});
+document.addEventListener('mouseup',()=>{isDragging=false;});
+document.addEventListener('mousemove',e=>{
+  if(isDragging){
+    heart.style.left=(e.pageX-offsetX)+'px';
+    heart.style.top=(e.pageY-offsetY)+'px';
+    spawnFloatingHeart(e.pageX,e.pageY);
+  }
+});
+
+// ---------------------- RANDOM COLOR ----------------------
+function randomColor(){ 
+  const colors=['#ff66cc','#ffb3ff','#ff99cc','#ffccff','#ff99ff'];
+  document.body.style.background=`radial-gradient(circle at center, ${colors[Math.floor(Math.random()*colors.length)]}, #000000 90%)`;
 }
+
+// ---------------------- MUSIC CONTROL ----------------------
+const bgMusic=document.getElementById('bgMusic'); 
+const musicBtn=document.getElementById('music-control');
+function toggleMusic(){ 
+  if(bgMusic.paused){ bgMusic.play(); musicBtn.textContent='🎵'; } 
+  else { bgMusic.pause(); musicBtn.textContent='🔇'; } 
+}
+
+// ---------------------- EFFECTS CANVAS ----------------------
+const effectsCanvas = document.getElementById('effects-canvas');
+const ec = effectsCanvas.getContext('2d');
+function resizeCanvas(){ effectsCanvas.width=window.innerWidth; effectsCanvas.height=window.innerHeight; }
+window.addEventListener('resize',resizeCanvas);
+resizeCanvas();
+
+let sparkles=[], floatingHearts=[], confettis=[];
+
+class Sparkle{
+  constructor(x,y){ this.x=x; this.y=y; this.size=Math.random()*3+2; this.life=0; this.color=['#ff66cc','#ffb3ff','#ff99cc'][Math.floor(Math.random()*3)]; }
+  update(){ this.y-=1; this.life+=1; }
+  draw(){ ec.fillStyle=this.color; ec.globalAlpha=1-this.life/20; ec.beginPath(); ec.arc(this.x,this.y,this.size,0,Math.PI*2); ec.fill(); ec.globalAlpha=1; }
+}
+
+class FloatingHeart{
+  constructor(x,y){ this.x=x; this.y=y; this.life=0; }
+  update(){ this.y-=1; this.life+=1; }
+  draw(){ ec.font='20px Arial'; ec.fillText('💖',this.x,this.y); }
+}
+
+class Confetti{
+  constructor(){ this.x=Math.random()*window.innerWidth; this.y=0; this.color=['#ff66cc','#ffb3ff','#ff99cc'][Math.floor(Math.random()*3)]; this.angle=Math.random()*360; this.speedY=Math.random()*2+1; }
+  update(){ this.y+=this.speedY; this.angle+=10; }
+  draw(){ ec.save(); ec.translate(this.x,this.y); ec.rotate(this.angle*Math.PI/180); ec.fillStyle=this.color; ec.fillRect(-3,-3,6,6); ec.restore(); }
+}
+
+function spawnSparkle(x,y){ sparkles.push(new Sparkle(x,y)); }
+function spawnFloatingHeart(x,y){ floatingHearts.push(new FloatingHeart(x,y)); }
+function spawnConfetti(){ for(let i=0;i<15;i++) confettis.push(new Confetti()); }
+
+document.body.addEventListener('mousemove', e=>{ if(Math.random()<0.3) spawnSparkle(e.pageX,e.pageY); });
+
+// ---------------------- CURSOR CHASING MESSAGES ----------------------
+const messagesList=["😍","😘","💖","💌","✨"];
+document.addEventListener('mousemove', e=>{
+  if(Math.random()<0.05){
+    const m=document.createElement('div');
+    m.className='cursor-msg';
+    m.textContent=messagesList[Math.floor(Math.random()*messagesList.length)];
+    m.style.left=e.pageX+'px';
+    m.style.top=e.pageY+'px';
+    document.body.appendChild(m);
+    setTimeout(()=>m.remove(),2000);
+  }
+});
+
+// ---------------------- EFFECTS ANIMATION ----------------------
+function animateEffects(){
+  ec.clearRect(0,0,effectsCanvas.width,effectsCanvas.height);
+  sparkles.forEach((s,i)=>{ s.update(); s.draw(); if(s.life>20) sparkles.splice(i,1); });
+  floatingHearts.forEach((h,i)=>{ h.update(); h.draw(); if(h.life>50) floatingHearts.splice(i,1); });
+  confettis.forEach((c,i)=>{ c.update(); c.draw(); if(c.y>window.innerHeight) confettis.splice(i,1); });
+  requestAnimationFrame(animateEffects);
+}
+animateEffects();
 </script>
 
 </body>
