@@ -3,27 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Love - Paula #Pauli</title>
+<title>For My Paula</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;600&display=swap');
 
 :root {
-  --primary: #00f7ff;
-  --secondary: #ff2df7;
-  --bg-dark: #01010a;
-  --text: #d8faff;
+  --primary: #ff66cc;
+  --secondary: #ffb3ff;
+  --bg-dark: #100010;
+  --text: #ffd6f0;
 }
 
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: radial-gradient(circle at center, #050515, #000000 90%);
+  background: radial-gradient(circle at center, #180018, #000000 90%);
   color: var(--text);
   overflow-x: hidden;
   perspective: 1000px;
 }
 
-/* HERO SECTION WITH PARTICLE FIELD */
+/* HERO SECTION */
 .hero {
   height: 100vh;
   display: flex;
@@ -33,240 +33,394 @@ body {
   text-align: center;
   position: relative;
   overflow: hidden;
+  background-image: url('images/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
 }
-
 .canvas-particles {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:0;
+  pointer-events: none;
 }
-
 .hero-title {
   font-family: 'Orbitron', sans-serif;
   font-size: 3.5rem;
   letter-spacing: 3px;
   color: var(--primary);
-  text-shadow: 0 0 35px var(--primary), 0 0 60px var(--secondary);
+  text-shadow: 0 0 20px var(--primary), 0 0 35px var(--secondary);
   position: relative;
-  z-index: 1;
-  animation: fadeInUp 2s ease;
+  z-index:2;
+  animation: fadeInUp 2s ease, glowPulse 2s infinite alternate;
 }
-
 .hero-subtitle {
   max-width: 700px;
   font-size: 1.3rem;
-  opacity: 0.85;
+  opacity:0.85;
   position: relative;
-  z-index: 1;
-  animation: fadeInUp 3s ease;
-  margin-top: 15px;
+  z-index:2;
+  animation: fadeInUp 3s ease, glowPulse 2s infinite alternate;
+  margin-top:15px;
 }
-
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {opacity:0; transform: translateY(30px);}
+  to {opacity:1; transform: translateY(0);}
+}
+@keyframes glowPulse {
+  0% { text-shadow: 0 0 15px var(--secondary),0 0 30px var(--primary);}
+  100% { text-shadow: 0 0 35px var(--secondary),0 0 60px var(--primary);}
 }
 
-/* PANEL SECTIONS WITH NEON GLOW AND ANIMATION */
-.panel {
-  padding: 100px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+/* LOVE NOTE BUTTON */
+.love-button {
   position: relative;
-  perspective: 800px;
+  z-index: 2;
+  margin-top: 20px;
+  padding: 12px 25px;
+  font-size: 1.2rem;
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(45deg, #ff66cc, #ffb3ff);
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  color: white;
+  box-shadow: 0 0 10px #ff66cc, 0 0 20px #ffb3ff;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.love-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px #ff66cc, 0 0 40px #ffb3ff;
+}
+.love-note {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateY(20px);
+  background: rgba(255,182,193,0.95);
+  padding: 20px 30px;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 1.2rem;
+  text-align: center;
+  opacity: 0;
+  z-index: 9999;
+  transition: opacity 0.5s, transform 0.5s;
+}
+.love-note.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) translateY(0);
 }
 
+/* PANEL SECTIONS */
+.panel {
+  padding:80px 20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  position:relative;
+  perspective:800px;
+}
 .panel h2 {
-  font-family: 'Orbitron';
-  font-size: 2.8rem;
+  font-family:'Orbitron';
+  font-size:2.6rem;
   color: var(--secondary);
-  text-shadow: 0 0 25px var(--secondary), 0 0 50px var(--primary);
-  margin-bottom: 40px;
+  text-shadow:0 0 20px var(--secondary),0 0 40px var(--primary);
+  margin-bottom:30px;
   animation: neonPulse 2s infinite alternate;
 }
-
 @keyframes neonPulse {
-  0% { text-shadow: 0 0 20px var(--secondary), 0 0 40px var(--primary); }
-  100% { text-shadow: 0 0 35px var(--secondary), 0 0 80px var(--primary); }
+  0% {text-shadow:0 0 15px var(--secondary),0 0 30px var(--primary);}
+  100% {text-shadow:0 0 25px var(--secondary),0 0 50px var(--primary);}
 }
-
 .panel-card {
-  background: rgba(0,0,0,0.55);
-  border: 1px solid rgba(0, 247, 255, 0.25);
-  border-radius: 30px;
-  padding: 50px;
-  max-width: 850px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 0 35px #00f7ff55, 0 0 60px #ff2df744;
-  transform: translateY(80px) rotateX(10deg);
-  opacity: 0;
-  animation: cardEnter 1.2s ease forwards;
+  background: rgba(255,182,193,0.4) url('images/floating-hearts.png') no-repeat center top;
+  background-size:60px;
+  border:1px solid rgba(255,105,180,0.6);
+  border-radius:25px;
+  padding:40px;
+  max-width:800px;
+  backdrop-filter: blur(8px);
+  box-shadow:0 0 20px #ff66cc55,0 0 40px #ffb3ff44;
+  transform: translateY(40px) rotateX(5deg);
+  opacity:0;
+  animation: cardEnter 1s ease forwards;
 }
-
 @keyframes cardEnter {
-  to { opacity: 1; transform: translateY(0) rotateX(0); }
+  to {opacity:1; transform: translateY(0) rotateX(0);}
 }
 
-/* TIMELINE WITH 3D EFFECT */
+/* TIMELINE */
 .timeline {
-  width: 90%;
-  max-width: 950px;
-  margin-top: 60px;
-  border-left: 4px solid var(--primary);
-  padding-left: 50px;
+  width:85%;
+  max-width:900px;
+  margin-top:50px;
+  border-left:4px solid var(--primary);
+  padding-left:40px;
 }
 .timeline .event {
-  margin-bottom: 60px;
-  position: relative;
-  animation: fadeIn3D 2s ease forwards;
+  margin-bottom:50px;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  cursor:pointer;
 }
 .timeline .event::before {
-  content: '';
-  width: 20px;
-  height: 20px;
+  content:'';
+  width:18px; height:18px;
   background: var(--secondary);
-  border-radius: 50%;
-  position: absolute;
-  left: -56px;
-  top: 0;
-  box-shadow: 0 0 20px var(--secondary);
+  border-radius:50%;
+  position:absolute;
+  left:-46px; top:4px;
+  box-shadow:0 0 15px var(--secondary),0 0 25px var(--primary);
+}
+.event .details {
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.4s ease;
+  color:#ffb3ff;
+  margin-top:5px;
 }
 
-@keyframes fadeIn3D {
-  from { opacity: 0; transform: translateZ(-50px); }
-  to { opacity: 1; transform: translateZ(0); }
-}
-
-/* GALLERY WITH 3D HOVER EFFECTS */
+/* GALLERY */
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 30px;
-  width: 90%;
-  max-width: 1000px;
-  margin-top: 50px;
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
+  width:90%;
+  max-width:1000px;
+  margin-top:40px;
 }
-.gallery img {
-  width: 100%;
-  border-radius: 20px;
-  border: 1px solid rgba(0, 247, 255, 0.4);
+.gallery-item {
+  position:relative;
+  overflow:hidden;
+  border-radius:20px;
+  transition: transform 0.3s ease;
+}
+.gallery-item img {
+  width:100%;
+  border:1px solid rgba(255,105,180,0.5);
   transition: transform 0.5s, box-shadow 0.5s;
+  display:block;
 }
-.gallery img:hover {
-  transform: rotateY(15deg) rotateX(5deg) scale(1.15);
-  box-shadow: 0 0 35px var(--primary), 0 0 60px var(--secondary);
+.gallery-item:hover img {
+  transform: rotateY(10deg) rotateX(4deg) scale(1.12) translateY(-5px);
+  box-shadow:0 0 25px var(--primary),0 0 40px var(--secondary);
+}
+.gallery-item .description {
+  position:absolute;
+  bottom:0; left:0;
+  width:100%;
+  background: rgba(255,182,193,0.8);
+  color:#fff;
+  text-align:center;
+  padding:10px;
+  font-size:1rem;
+  opacity:0;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateY(5px);
+}
+.gallery-item:hover .description {
+  opacity:1;
+  transform: translateY(0);
 }
 
-/* NEON FLOATING ELEMENTS */
-.neon-ring {
+/* DRAG HEART */
+.draggable-heart {
   position: absolute;
-  border: 2px solid var(--primary);
-  border-radius: 50%;
-  opacity: 0.25;
-  animation: spin 30s linear infinite;
+  font-size: 28px;
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.2s;
 }
-.neon-ring1 { width: 250px; height: 250px; top: 5%; left: 10%; }
-.neon-ring2 { width: 350px; height: 350px; bottom: 10%; right: 15%; animation-duration: 45s; }
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
 </style>
 </head>
 <body>
 
-<!-- HERO SECTION -->
 <section class="hero">
   <canvas class="canvas-particles" id="particles"></canvas>
-  <div class="neon-ring neon-ring1"></div>
-  <div class="neon-ring neon-ring2"></div>
-  <h1 class="hero-title">To My Beloved Paula</h1>
-  <p class="hero-subtitle">You are the brightest star in my universe, the center of every thought and dream.</p>
+  <h1 class="hero-title">To My BABY 💖</h1>
+  <p class="hero-subtitle">You’re the brightest star in my universe — my dreams, my forever.</p>
+  <button class="love-button" onclick="showLoveNote()">Click me 💌</button>
+  <div id="love-note" class="love-note"></div>
 </section>
 
-<!-- ABOUT PANEL -->
 <section class="panel">
-  <h2>My Feelings for you</h2>
+  <h2>My Feelings for You</h2>
   <div class="panel-card">
-    I think about you constantly, dream about our future, and cherish every moment we've shared. You are my everything, You are my Paula and You are my baby.
+    I think about you every day, dream about our future, and cherish each moment we spend together.  
+    You are my everything — my heart, my love, my home.
   </div>
 </section>
 
-<!-- TIMELINE PANEL -->
 <section class="panel">
   <h2>Our Future Timeline</h2>
   <div class="timeline">
-    <div class="event"><strong>Step 1:</strong> Build our dreams together.</div>
-    <div class="event"><strong>Step 2:</strong> Explore the world hand in hand.</div>
-    <div class="event"><strong>Step 3:</strong> Marry and create a loving family.</div>
-    <div class="event"><strong>Step 4:</strong> Grow old together, eternally connected.</div>
+    <div class="event" onclick="toggleEvent(this)">
+      <strong>Step 1:</strong> Build our dreams together
+      <div class="details">We'll start small but dream big 💖</div>
+    </div>
+    <div class="event" onclick="toggleEvent(this)">
+      <strong>Step 2:</strong> Explore the world hand in hand
+      <div class="details">Adventure everywhere, side by side ✨</div>
+    </div>
+    <div class="event" onclick="toggleEvent(this)">
+      <strong>Step 3:</strong> Marry and build our family
+      <div class="details">Creating love and laughter in our home ❤️</div>
+    </div>
+    <div class="event" onclick="toggleEvent(this)">
+      <strong>Step 4:</strong> Grow old together
+      <div class="details">Forever side by side 🌟</div>
+    </div>
   </div>
 </section>
 
-<!-- GALLERY PANEL -->
 <section class="panel">
-  <h2></h2>
+  <h2>Some pics of you, baby</h2>
   <div class="gallery">
-    <img src="pic1.jpg" alt="Memory 1">
-    <img src="pic2.jpg" alt="Memory 2">
-    <img src="pic3.jpg" alt="Memory 3">
-    <img src="pic4.jpg" alt="Memory 4">
+    <div class="gallery-item">
+      <img src="pic1.jpg" alt="Memory 1" loading="lazy">
+      <div class="description">You when tuff</div>
+    </div>
+    <div class="gallery-item">
+      <img src="pic2.jpg" alt="Memory 2" loading="lazy">
+      <div class="description">You when a baddie</div>
+    </div>
+    <div class="gallery-item">
+      <img src="pic3.jpg" alt="Memory 3" loading="lazy">
+      <div class="description">You when a chill guy</div>
+    </div>
+    <div class="gallery-item">
+      <img src="pic4.jpg" alt="Memory 4" loading="lazy">
+      <div class="description">You when a cutie kawai patootie</div>
+    </div>
   </div>
 </section>
 
-<!-- PARTICLE JS -->
 <script>
+// Particle background - low lag
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let particlesArray = [];
+let particles = [];
 class Particle {
-  constructor(){
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2 + 1;
-    this.speedX = (Math.random() - 0.5) * 0.5;
-    this.speedY = (Math.random() - 0.5) * 0.5;
+  constructor() {
+    this.x = Math.random()*canvas.width;
+    this.y = Math.random()*canvas.height;
+    this.size = Math.random()*1.5+0.5;
+    this.speedX = (Math.random()-0.5)*0.2;
+    this.speedY = (Math.random()-0.5)*0.2;
   }
-  update(){
+  update() {
     this.x += this.speedX;
     this.y += this.speedY;
-    if(this.x > canvas.width) this.x = 0;
-    if(this.x < 0) this.x = canvas.width;
-    if(this.y > canvas.height) this.y = 0;
-    if(this.y < 0) this.y = canvas.height;
+    if(this.x>canvas.width) this.x=0;
+    if(this.x<0) this.x=canvas.width;
+    if(this.y>canvas.height) this.y=0;
+    if(this.y<0) this.y=canvas.height;
   }
-  draw(){
-    ctx.fillStyle = '#00f7ff';
-    ctx.shadowColor = '#00f7ff';
-    ctx.shadowBlur = 10;
+  draw() {
+    ctx.fillStyle='#ff66cc';
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI *2);
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
     ctx.fill();
   }
 }
 
-function init(){
-  particlesArray = [];
-  for(let i=0;i<200;i++){
-    particlesArray.push(new Particle());
+function init() {
+  particles=[];
+  for(let i=0;i<30;i++){
+    particles.push(new Particle());
   }
 }
-
-function animate(){
+function animate() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  particlesArray.forEach(p => {p.update(); p.draw();});
+  particles.forEach(p=>{p.update(); p.draw();});
   requestAnimationFrame(animate);
 }
-
 init();
 animate();
-window.addEventListener('resize', ()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight; init();});
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight; init();});
+
+// Timeline toggle
+function toggleEvent(el){
+  const details = el.querySelector('.details');
+  if(details.style.maxHeight) details.style.maxHeight=null;
+  else details.style.maxHeight=details.scrollHeight+'px';
+}
+
+// Gallery tilt
+document.querySelectorAll('.gallery-item').forEach(item=>{
+  item.addEventListener('mousemove',e=>{
+    const rect=item.getBoundingClientRect();
+    const x=e.clientX-rect.left;
+    const y=e.clientY-rect.top;
+    const cx=rect.width/2;
+    const cy=rect.height/2;
+    const dx=(x-cx)/20;
+    const dy=(y-cy)/20;
+    item.style.transform=`rotateY(${dx}deg) rotateX(${-dy}deg)`;
+  });
+  item.addEventListener('mouseleave',()=>item.style.transform='rotateY(0) rotateX(0)');
+});
+
+// Interactive love notes
+const messages = [
+  "I love you more every day 💖",
+  "You make my world brighter ✨",
+  "Forever and always, my love ❤️",
+  "You are my everything, baby 💌"
+];
+let msgIndex = 0;
+function showLoveNote() {
+  const note = document.getElementById('love-note');
+  note.textContent = messages[msgIndex];
+  note.classList.add('show');
+  setTimeout(()=>{
+    note.classList.remove('show');
+    msgIndex = (msgIndex+1)%messages.length;
+  }, 2500);
+}
+
+// DRAG-AND-DROP HEARTS (max 10 on screen)
+let hearts = [];
+function createHeart(x,y){
+  if(hearts.length>=10) return;
+  const heart = document.createElement('div');
+  heart.textContent='💖';
+  heart.className='draggable-heart';
+  heart.style.left=x+'px';
+  heart.style.top=y+'px';
+  document.body.appendChild(heart);
+  hearts.push(heart);
+
+  let offsetX=0, offsetY=0, isDragging=false;
+
+  heart.addEventListener('mousedown', e=>{
+    isDragging=true;
+    offsetX = e.clientX - heart.offsetLeft;
+    offsetY = e.clientY - heart.offsetTop;
+    heart.style.cursor='grabbing';
+  });
+  document.addEventListener('mousemove', e=>{
+    if(!isDragging) return;
+    heart.style.left=(e.clientX-offsetX)+'px';
+    heart.style.top=(e.clientY-offsetY)+'px';
+  });
+  document.addEventListener('mouseup', e=>{
+    if(isDragging){
+      isDragging=false;
+      heart.style.cursor='grab';
+    }
+  });
+}
+
+document.querySelector('.hero').addEventListener('click', e=>{
+  createHeart(e.pageX,e.pageY);
+});
 </script>
 
 </body>
